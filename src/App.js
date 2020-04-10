@@ -1,52 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "./styles/Wrapper";
 import Footer from "./components/Footer/Footer";
 import Home from "./views/home";
 import Button from "./components/Button/Button";
 import Header from "./components/Header/Header";
 import { getTime, getSeason } from "./utils";
-
+import GlobalContext from "./context/globalContext";
 import {   BrowserRouter as Router,
   Switch,
   Link,
-  Route} from "react-router-dom";
-import GlobalContext from "./context/globalContext";
+  Route,
+useLocation} from "react-router-dom";
 
-function App(props) {
 
+function App() {
   // Functions handling query params
 
-  const queryParamsHandler = ({ season, time, term }) => {
+  const queryParamsHandler = ({ season, term, color }) => {
     let newQueryParams = {
-      season, time, term
+      season, term, time: getTime()
     }
     let newState = Object.assign({}, appState, {
+      themeColor: color,
       queryParams: newQueryParams
     })
     setAppState(newState)
   }
-  const privateWallAdd = (items) => {
-    let newPrivateWall = [...appState.privateWall, items];
-    let newState = Object.assign({}, appState, {
-      privateWall: newPrivateWall
+  const privateWallAdd = (item, prevContext) => {
+    let newPrivateWall = prevContext.privateWall.slice();
+    newPrivateWall.push(item);
+    let newState = Object.assign({}, prevContext, {
+       privateWall:[...newPrivateWall]
     })
-    setAppState(newState)
-
+    if (localStorage.getItem("pictures") !== null) {
+      let oldPictures = JSON.parse(localStorage.getItem("pictures"));
+      oldPictures.push(item);
+      localStorage.setItem("pictures", JSON.stringify(oldPictures));
+    } else {
+      localStorage.setItem("pictures", JSON.stringify(newPrivateWall));
+    }
+   setAppState(newState)
   }
-  const privateWallRemove = (removeIndex) => {
-    let newPrivateWall = appState.privateWall.filter((item, index) => index !== removeIndex);
-    let newState = Object.assign({}, appState, {
-      privateWall: newPrivateWall
-    });
-    setAppState(newState)
-
+  const privateWallRemove = (removeId, prevContext) => {
+    if (localStorage.getItem("pictures") !== null) {
+      let oldPrivateWall = JSON.parse(localStorage.getItem("pictures"))
+      let newPrivateWall = oldPrivateWall.filter((item) => item.id !== removeId);
+      localStorage.setItem("pictures", JSON.stringify(newPrivateWall));
+      let newState = Object.assign({}, prevContext, {
+        privateWall: [...newPrivateWall]
+      });
+      setAppState(newState)
+    } else {
+      if (prevContext.privateWall[0].id !== null) {
+        let oldPrivateWall = prevContext.privateWall;
+        let newPrivateWall = oldPrivateWall.filter((item) => item.id !== removeId);
+        localStorage.setItem("pictures", JSON.stringify(newPrivateWall));
+        let newState = Object.assign({}, prevContext, {
+       privateWall:[...newPrivateWall]
+     })
+        setAppState(newState)
+      } else {
+        console.log("Jakiś błąd");
+      }
+    }
   }
 
   // Default context and state of root comoponent
 
   const defaultContext = {
     themeColor: "purple",
-    privateWall: [{}],
+    privateWall: [],
     queryParams: {
         season: getSeason(),
         time: getTime(),
@@ -61,21 +84,33 @@ function App(props) {
   const [appState, setAppState] = useState(defaultContext)
   const [page, setPage] = useState("/")
 
+  const location = window.location.href;
+  useEffect(() => {
+    if (location.match(/private/i)) {
+      setPage('/private');
+    } else {
+      setPage('/')
+    }
+  }, [location])
+  
+
   return (
     <GlobalContext.Provider value={appState}>
     <Wrapper>
-          <Header title="My Wallpapers" />
+        <Header title="My Wallpapers"/>
       <Router>
         <Link to={page === "/" ? "/private" : "/"} onClick={() => setPage(page === "/" ? "/private" : "/")}><Button>{page === "/" ? "Private wall" : "Recommended" }</Button></Link>
         <Switch>
           <Route exact path="/">
-            <Home
-              currentPage="home"
+              <Home
+                context={appState}
+              currentPage={page}
                 subtitle="Recommended wallpapers" />
           </Route>
           <Route path="/private">
-            <Home
-              currentPage="private"
+              <Home
+                 context={appState}
+              currentPage={page}
               subtitle="Private wall"/>
           </Route>
         </Switch>
@@ -87,3 +122,5 @@ function App(props) {
 }
 
 export default App;
+// Podpiąć ustawienia do aplikacji
+// Podpiąć serduszka do zapisywania w localStorage

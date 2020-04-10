@@ -5,11 +5,8 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faArrowsAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-
-// full={item.full}
-// source={item.source}
-// author={item.author}
-// authorPage={item.authorPage}
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import GlobalContext from "../../context/globalContext";
 
 const StyledCover = styled.div`
 position: absolute;
@@ -86,13 +83,15 @@ position: relative;
 `;
 
 const ImageCover = (props) => {
-    console.log(props.author)
     return (
-        <StyledCover visible={props.visible}>
-            <StyledIcon><FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon></StyledIcon>
-            <StyledStrip><StyledAuthorToolTip author={props.author}><FontAwesomeIcon icon={faUser} /></StyledAuthorToolTip><FontAwesomeIcon icon={faArrowsAlt} style={{ transform: "rotate(45deg)" }} onClick={()=>props.openFullScreen()} /><FontAwesomeIcon icon={faGlobe} onClick={()=> window.open(props.authorPage)} /></StyledStrip>
-        </StyledCover>
-
+        <GlobalContext.Consumer>
+            {(context) => (
+                <StyledCover visible={props.visible}>
+                    <StyledIcon>{props.private ? <FontAwesomeIcon icon={faTimes} onClick={() => context.privateWallRemove(props.id, context)} /> : <FontAwesomeIcon icon={faHeart} onClick={() => context.privateWallAdd(props, context)} />}</StyledIcon>
+                <StyledStrip><StyledAuthorToolTip author={props.author}><FontAwesomeIcon icon={faUser} /></StyledAuthorToolTip><FontAwesomeIcon icon={faArrowsAlt} style={{ transform: "rotate(45deg)" }} onClick={()=>props.openFullScreen()} /><FontAwesomeIcon icon={faGlobe} onClick={()=> window.open(props.authorPage)} /></StyledStrip>
+            </StyledCover>
+            )}
+        </GlobalContext.Consumer>
     )
 }
 

@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
 import NeonFont from "../../fonts/AUTOMANI.TTF";
+import GlobalContext from '../../context/globalContext';
 
 const StyledHeader = styled.header`
     width: 100vw;
@@ -16,17 +17,18 @@ const StyledTitle = styled.h1`
   src: url(${NeonFont});
 }
 font-family: 'AUTOMANI';
-      color: #FF66FF;
+      color: ${({color})=> (color ? color : "#FF66FF")};
       font-size: 46px;
       text-align: center;
-      text-shadow: 0 0 25px purple;
+      text-shadow: 0 0 25px ${({color})=> (color ? color : "#FF66FF")};
       letter-spacing: 2px;
 `;
 
 const Header = ({ title }) => {
+  const context = useContext(GlobalContext);
   return (
     <StyledHeader>
-      <StyledTitle>{title}</StyledTitle>
+      <StyledTitle color={context.themeColor}>{title}</StyledTitle>
     </StyledHeader>
   );
 };

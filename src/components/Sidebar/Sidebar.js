@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import GlobalContext from "../../context/globalContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 
+
 const StyledHeader = styled.h4`
   font-size: 32px;
   font-family: monospace;
   text-align: center;
+  color: ${({color})=> (color ? `${color}` : '#ff66ff')};
   margin: 20px auto;
 `;
 
@@ -20,8 +22,8 @@ const StyledSidebar = styled.aside`
   transform: ${({ active }) =>
     active ? "translateX(0px)" : "translateX(-400px)"};
   background-color: black;
-  border-right: solid 4px purple;
-  color: purple;
+  border-right:  ${({color})=> (color ? `solid 2px ${color}` : 'solid 2px #ff66ff')};
+  color: #ff66ff;
   font-family: monospace;
   display: flex;
   flex-direction: column;
@@ -37,7 +39,7 @@ const StyledToggler = styled.div`
   transform: translateY(-50%);
   background-color: black;
   border-radius: 50%;
-  border-right: solid 4px purple;
+  border-right: ${({color})=> (color ? `solid 4px ${color}` : 'solid 4px #ff66ff')};
   z-index: -1;
 `;
 const StyledSettingsWrapper = styled.form`
@@ -58,7 +60,7 @@ const StyledIcon = styled.div`
   height: 100%;
   padding-left: 4px;
   font-size: 32px;
-  color: ${({ color }) => (color ? color : "yellow")};
+  color: ${({ color }) => (color ? color : "#FF66FF")};
 `;
 
 const StyledLabel = styled.label`
@@ -67,6 +69,7 @@ const StyledLabel = styled.label`
   align-items: flex-start;
   font-size: 22px;
   margin-bottom: 20px;
+  color: ${({color})=> (color ? color : "#FF66FF")};
 `;
 const StyledInput = styled.input`
   outline: none;
@@ -76,8 +79,8 @@ const StyledInput = styled.input`
   background-color: transparent;
   border: none;
   border-bottom: solid 2px
-    ${({ themeColor }) => (themeColor ? themeColor : "purple")};
-  color: ${({ themeColor }) => (themeColor ? themeColor : "purple")};
+  ${({color})=> (color ? color : "#FF66FF")};
+  color: ${({color})=> (color ? color : "#FF66FF")};
 `;
 const StyledSelect = styled.select`
   outline: none;
@@ -86,94 +89,85 @@ const StyledSelect = styled.select`
   padding: 5px;
   background-color: transparent;
   border: none;
-  border-bottom: solid 2px
-    ${({ themeColor }) => (themeColor ? themeColor : "purple")};
-  color: ${({ themeColor }) => (themeColor ? themeColor : "purple")};
+  border-bottom: ${({color})=> (color ? `solid 2px ${color}` : 'solid 2px #ff66ff')};
+  color: ${({color})=> (color ? `${color}` : '#ff66ff')};
 `;
 const StyledOption = styled.option`
   font-size: 18px;
   outline: none;
   background: black;
-  color: ${({ themeColor }) => (themeColor ? themeColor : "purple")};
+  color: ${({color})=> (color ? `${color}` : '#ff66ff')};
 `;
 const Button = styled.button`
   padding: 10px 30px;
   border-radius: 5px;
-  border: solid 2px #ff66ff;
+border: ${({color})=> (color ? `solid 2px ${color}` : 'solid 2px #ff66ff')};
   background-color: transparent;
   text-transform: uppercase;
   margin: 10px auto;
   width: 100px;
-  color: #ff66ff;
+  color: ${({color})=> (color ? `${color}` : '#ff66ff')};;
   top: 10px;
   position: relative;
 `;
 
 const Sidebar = () => {
+  const context = useContext(GlobalContext)
   const [active, setActive] = useState(false);
   const [season, setSeason] = useState("summer");
   const [term, setTerm] = useState("landscape");
-  const [color, setColor] = useState("purple");
-  // themeColor: "purple",
-  // privateWall: [{}],
-  // queryParams: {
-  //     season: getSeason(),
-  //     time: getTime(),
-  //     term: "landscape"
-  // },
-  // queryParamsHandler,
-  // privateWallAdd,
-  // privateWallRemove
+  const [color, setColor] = useState("#ff66ff");
+
+  useEffect(() => {
+    setColor(context.themeColor)
+  }, [context])
+
   return (
-    <GlobalContext.Consumer>
-      {(context) => (
-        <StyledSidebar active={active}>
+        <StyledSidebar color={color} active={active}>
           <StyledSettingsWrapper>
-            <StyledHeader>Settings</StyledHeader>
-            <StyledLabel>
+            <StyledHeader color={color}>Settings</StyledHeader>
+            <StyledLabel color={color}>
               Theme color:
-              <StyledSelect onChange={(e) => setColor(e.target.value)}>
-                <StyledOption value="Red">Red</StyledOption>
-                <StyledOption value="Blue">Blue</StyledOption>
-                <StyledOption value="Green">Green</StyledOption>
-                <StyledOption value="Yellow">Yellow</StyledOption>
+              <StyledSelect value={color} color={color} onChange={(e) => setColor(e.target.value)}>
+                <StyledOption color={color} value="#FF66FF">Purple</StyledOption>
+                <StyledOption color={color} value="Red">Red</StyledOption>
+                <StyledOption color={color} value="Blue">Blue</StyledOption>
+                <StyledOption color={color} value="Green">Green</StyledOption>
+                <StyledOption color={color} value="Yellow">Yellow</StyledOption>
               </StyledSelect>
             </StyledLabel>
-            <StyledLabel>
+            <StyledLabel color={color}>
               Season:
-              <StyledSelect onChange={(e) => setSeason(e.target.value)}>
-                <StyledOption value="winter">Winter</StyledOption>
-                <StyledOption value="spring">Spring</StyledOption>
-                <StyledOption value="summer">Summer</StyledOption>
-                <StyledOption value="autumn">Autumn</StyledOption>
+              <StyledSelect color={color} value={season} onChange={(e) => setSeason(e.target.value)}>
+                <StyledOption color={color} value="winter">Winter</StyledOption>
+                <StyledOption color={color} value="spring">Spring</StyledOption>
+                <StyledOption color={color} value="summer">Summer</StyledOption>
+                <StyledOption color={color} value="autumn">Autumn</StyledOption>
               </StyledSelect>
             </StyledLabel>
-            <StyledLabel>
-              Term:
+            <StyledLabel color={color}>
+          Term:
               <StyledInput
+            color={color}
+                value={term}
                 onChange={(e) => setTerm(e.target.value)}
               ></StyledInput>
             </StyledLabel>
-            <Button
+            <Button color={color}
               onClick={(e) => {
                 e.preventDefault();
-                console.log(season);
-                console.log(term);
-                console.log(color);
+                context.queryParamsHandler({season, term, color})
               }}
             >
               Save
             </Button>
           </StyledSettingsWrapper>
-          <StyledToggler onClick={() => setActive(!active)}>
-            <StyledIcon color={context.themeColor}>
-              {console.log(context.themeColor)}
+          <StyledToggler color={color} onClick={() => setActive(!active)}>
+            <StyledIcon color={color}>
               <FontAwesomeIcon icon={faCog} />
             </StyledIcon>
           </StyledToggler>
         </StyledSidebar>
-      )}
-    </GlobalContext.Consumer>
   );
 };
 
