@@ -28,6 +28,10 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media all and (max-width: 800px){
+    transform: ${({ active }) => active ? "translateX(0px)" : "translateX(-90vw)"};
+    width: calc(90vw + 4px);
+  }
 `;
 const StyledToggler = styled.div`
   position: absolute;
@@ -49,6 +53,9 @@ const StyledSettingsWrapper = styled.form`
   width: 300px;
   margin: 10px auto;
   padding: 30px 20px;
+  @media all and (max-width: 800px){
+    width: 90%;
+  }
 `;
 
 const StyledIcon = styled.div`
@@ -80,7 +87,10 @@ const StyledInput = styled.input`
   border: none;
   border-bottom: solid 2px
   ${({color})=> (color ? color : "#FF66FF")};
-  color: ${({color})=> (color ? color : "#FF66FF")};
+  color: ${({ color }) => (color ? color : "#FF66FF")};
+  @media all and (max-width: 800px){
+    width: 80%;
+  }
 `;
 const StyledSelect = styled.select`
   outline: none;
@@ -90,7 +100,10 @@ const StyledSelect = styled.select`
   background-color: transparent;
   border: none;
   border-bottom: ${({color})=> (color ? `solid 2px ${color}` : 'solid 2px #ff66ff')};
-  color: ${({color})=> (color ? `${color}` : '#ff66ff')};
+  color: ${({ color }) => (color ? `${color}` : '#ff66ff')};
+  @media all and (max-width: 800px){
+    width: 80%;
+  }
 `;
 const StyledOption = styled.option`
   font-size: 18px;

@@ -36,6 +36,9 @@ transition: all .3s ease-in-out;
     transform: scale(1.3);
     cursor: pointer;
 }
+@media all and (max-width: 800px){
+    margin-bottom: 16vw;
+}
 `;
 const StyledStrip = styled.div`
 display: flex;
@@ -59,6 +62,9 @@ font-size: 2vw;
     background: white;
     cursor: pointer;
     color: black;
+}
+@media all and (max-width: 800px){
+    font-size: 18px;
 }
 `;
 const StyledAuthorToolTip = styled.div`

@@ -9,6 +9,9 @@ const StyledSubtitle = styled.h4`
   margin-bottom: 40px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  @media all and (max-width: 800px){
+    font-size: 18px;
+  }
 `;
 const StyledWrapper = styled.div`
 display: block;

@@ -9,6 +9,11 @@ const Img = styled.img`
   display: block;
   align-items: center;
   justify-self: center;
+  @media all and (max-width: 800px){
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
 `;
 
 const StyledImgWrapper = styled.div`

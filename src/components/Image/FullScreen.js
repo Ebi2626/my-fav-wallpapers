@@ -25,6 +25,10 @@ width: 70%;
 min-width: auto;
 max-height: 90vh;
 height: auto;
+@media all and (max-width: 800px){
+    width: 100%;
+    height: auto;
+}
 `;
 const ClosingCross = styled.div`
 position: absolute;

@@ -15,6 +15,13 @@ const StyledList = styled.div`
   margin-left: 80px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px;
+  @media all and (max-width: 800px){
+      grid-template-columns: 1fr;
+      min-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
 `;
 
 const List = ({ currentPage, context }) => {

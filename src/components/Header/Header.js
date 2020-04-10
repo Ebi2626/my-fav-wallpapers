@@ -22,6 +22,9 @@ font-family: 'AUTOMANI';
       text-align: center;
       text-shadow: 0 0 25px ${({color})=> (color ? color : "#FF66FF")};
       letter-spacing: 2px;
+      @media all and (max-width: 800px){
+        font-size: 28px;
+      }
 `;
 
 const Header = ({ title }) => {
