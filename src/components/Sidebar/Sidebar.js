@@ -143,8 +143,8 @@ const Sidebar = () => {
               Theme color:
               <StyledSelect value={color} color={color} onChange={(e) => setColor(e.target.value)}>
                 <StyledOption color={color} value="#FF66FF">Purple</StyledOption>
-                <StyledOption color={color} value="Red">Red</StyledOption>
-                <StyledOption color={color} value="Blue">Blue</StyledOption>
+                <StyledOption color={color} value="Crimson">Red</StyledOption>
+                <StyledOption color={color} value="#00BFFF">Blue</StyledOption>
                 <StyledOption color={color} value="Green">Green</StyledOption>
                 <StyledOption color={color} value="Yellow">Yellow</StyledOption>
               </StyledSelect>
